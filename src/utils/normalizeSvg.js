@@ -1,5 +1,11 @@
 import * as PathConverter from './pathConverter';
 
+// from https://stackoverflow.com/questions/9716468/pure-javascript-a-function-like-jquerys-isnumeric
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 export function readAttrs(node) {
     var attrs = {};
     if (!node.attributes) {
@@ -7,15 +13,17 @@ export function readAttrs(node) {
     }
     Object.keys(node.attributes).forEach(function(_key) {
         var val = node.attributes[_key];
-        var key = _key.toLowerCase();
+        var key = _key;
         switch (key) {
         case 'fill':
-        case 'fill-opacity':
+        case 'fillOpacity':
         case 'opacity':
         case 'stroke':
-        case 'stroke-opacity':
-        case 'stroke-width':
-            attrs[key] = val;
+        case 'strokeOpacity':
+        case 'strokeWidth':
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
+            attrs[key] = isNumeric(val) ? parseFloat(val) : val;
         }
     });
     return attrs;
@@ -53,11 +61,13 @@ export function readStyles(node) {
     parseStyles(node.attributes.style).forEach(({val, key}) => {
         switch (key) {
         case 'fill':
-        case 'fill-opacity':
+        case 'fillOpacity':
         case 'opacity':
         case 'stroke':
-        case 'stroke-opacity':
-        case 'stroke-width':
+        case 'strokeOpacity':
+        case 'strokeWidth':
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
             style[key] = val;
         }
     });

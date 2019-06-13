@@ -36,6 +36,10 @@ export function styleNormCalc(styleNormFrom, styleNormTo, progress) {
     var i, styleNorm = {};
     for (i in styleNormFrom) {
         switch (i) {
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
+            styleNorm[i] = clone(styleNormFrom[i]);
+            break;
         case 'fill':
         case 'stroke':
             styleNorm[i] = clone(styleNormFrom[i]);
@@ -45,9 +49,9 @@ export function styleNormCalc(styleNormFrom, styleNormTo, progress) {
             styleNorm[i].opacity = styleNormFrom[i].opacity + (styleNormTo[i].opacity - styleNormFrom[i].opacity) * progress;
             break;
         case 'opacity':
-        case 'fill-opacity':
-        case 'stroke-opacity':
-        case 'stroke-width':
+        case 'fillOpacity':
+        case 'strokeOpacity':
+        case 'strokeWidth':
             styleNorm[i] = styleNormFrom[i] + (styleNormTo[i] - styleNormFrom[i]) * progress;
             break;
         }
@@ -65,9 +69,11 @@ export function styleNormToString(styleNorm) {
             style[i] = rgbToString(styleNorm[i]);
             break;
         case 'opacity':
-        case 'fill-opacity':
-        case 'stroke-opacity':
-        case 'stroke-width':
+        case 'fillOpacity':
+        case 'strokeOpacity':
+        case 'strokeWidth':
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
             style[i] = styleNorm[i];
             break;
         }
@@ -89,12 +95,19 @@ export function styleToNorm(styleFrom, styleTo) {
             }
             break;
         case 'opacity':
-        case 'fill-opacity':
-        case 'stroke-opacity':
-        case 'stroke-width':
+        case 'fillOpacity':
+        case 'strokeOpacity':
+        case 'strokeWidth':
             styleNorm[0][i] = styleFrom[i];
             if (styleTo[i] === undefined) {
                 styleNorm[1][i] = 1;
+            }
+            break;
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
+            styleNorm[0][i] = styleFrom[i];
+            if (styleTo[i] === undefined) {
+                styleNorm[1][i] = styleFrom[i];
             }
             break;
         }
@@ -110,12 +123,19 @@ export function styleToNorm(styleFrom, styleTo) {
             }
             break;
         case 'opacity':
-        case 'fill-opacity':
-        case 'stroke-opacity':
-        case 'stroke-width':
+        case 'fillOpacity':
+        case 'strokeOpacity':
+        case 'strokeWidth':
             styleNorm[1][i] = styleTo[i];
             if (styleFrom[i] === undefined) {
                 styleNorm[0][i] = 1;
+            }
+            break;
+        case 'strokeLinecap':
+        case 'strokeLinejoin':
+            styleNorm[1][i] = styleTo[i];
+            if (styleFrom[i] === undefined) {
+                styleNorm[0][i] = styleTo[i];
             }
             break;
         }
