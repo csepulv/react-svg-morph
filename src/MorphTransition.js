@@ -41,7 +41,7 @@ class MorphTransition extends React.Component {
             progress,
             easing,
             viewBox,
-            ...otherProps,
+            ...otherProps
         } = this.props;
 
         return (

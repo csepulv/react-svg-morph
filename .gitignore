@@ -4,3 +4,4 @@ publish
 lib
 tmp
 npm-debug.log
+.idea
